@@ -3,14 +3,14 @@ using Khylang.CsParsec;
 
 namespace Khylang
 {
-    class Program
+    static class Program
     {
         private static readonly GenParser<Tuple<string, string>> Parser =
             Parsers.Identifier("fzoo")
             .CombineLeft(Parsers.Whitespace())
             .CombineWith(Parsers.Identifier("<3"), Tuple.Create);
 
-        static void Main(string[] args)
+        static void Main()
         {
             Console.WriteLine(Parser.RunParser("fzoo <3"));
             Console.WriteLine(Parser.TryRunParser("fzoo </3"));
