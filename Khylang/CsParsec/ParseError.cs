@@ -20,5 +20,10 @@ namespace Khylang.CsParsec
         {
             get { return new ParseException(this); }
         }
+
+        public override string ToString()
+        {
+            return string.Format("ParseError{{{0}}}", _error);
+        }
     }
 }

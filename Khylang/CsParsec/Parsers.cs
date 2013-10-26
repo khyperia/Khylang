@@ -41,7 +41,7 @@ namespace Khylang.CsParsec
         /// </summary>
         public static GenParser<string> String(string s)
         {
-            return When(state => state.S.Length <= state.Index + s.Length && state.S.Substring(state.Index) == s ? s.Length : (int?)null,
+            return When(state => state.Index + s.Length <= state.S.Length && state.S.Substring(state.Index, s.Length) == s ? s.Length : (int?)null,
                         string.Format("Expected \"{0}\"", s)).Bind(state => Return(s));
         }
 
@@ -113,6 +113,14 @@ namespace Khylang.CsParsec
         public static GenParser<TRight> CombineRight<TLeft, TRight>(this GenParser<TLeft> left, GenParser<TRight> right)
         {
             return left.Bind(leftResult => right);
+        }
+
+        /// <summary>
+        /// Takes two parsers and returns the result of the right
+        /// </summary>
+        public static GenParser<TOut> CombineWith<TLeft, TRight, TOut>(this GenParser<TLeft> left, GenParser<TRight> right, Func<TLeft, TRight, TOut> func)
+        {
+            return left.Bind(leftResult => right.Bind(rightResult => Return(func(leftResult, rightResult))));
         }
 
         /// <summary>
