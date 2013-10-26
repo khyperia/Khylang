@@ -24,7 +24,7 @@ namespace Khylang.Utils
 
         public static IEither<TLeftOut, TRight> Bind<TLeftIn, TLeftOut, TRight>(this IEither<TLeftIn, TRight> value, Func<TLeftIn, IEither<TLeftOut, TRight>> func)
         {
-            return value.IsLeft ? func(value.Left) : new RightEither<TLeftOut, TRight>(value.Right);
+            return value.IsLeft ? func(value.Left) : value.Right.Right<TLeftOut, TRight>();
         }
     }
 

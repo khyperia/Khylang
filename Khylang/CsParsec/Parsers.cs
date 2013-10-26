@@ -11,7 +11,7 @@ namespace Khylang.CsParsec
         /// </summary>
         public static GenParser<T> Fail<T>(string error)
         {
-            return s => new RightEither<ParseResult<T>, ParseError>(new ParseError(error));
+            return s => new ParseError(error).Right<ParseResult<T>, ParseError>();
         }
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace Khylang.CsParsec
         /// </summary>
         public static GenParser<T> Return<T>(T value)
         {
-            return state => new LeftEither<ParseResult<T>, ParseError>(new ParseResult<T>(state, value));
+            return state => new ParseResult<T>(state, value).Left<ParseResult<T>, ParseError>();
         }
 
         /// <summary>
@@ -71,16 +71,15 @@ namespace Khylang.CsParsec
         /// </summary>
         public static GenParser<List<T>> Many<T>(GenParser<T> parser)
         {
-            return state => new LeftEither<ParseResult<List<T>>, ParseError>(
-                Ext.Fix<ParseState, ParseResult<List<T>>>((f, s) =>
-                {
-                    var result = parser(s);
-                    if (result.IsRight)
-                        return new ParseResult<List<T>>(s, new List<T>());
-                    var list = f(result.Left.State);
-                    list.Result.Insert(0, result.Left.Result);
-                    return list;
-                })(state));
+            return state => Ext.Fix<ParseState, ParseResult<List<T>>>((f, s) =>
+            {
+                var result = parser(s);
+                if (result.IsRight)
+                    return new ParseResult<List<T>>(s, new List<T>());
+                var list = f(result.Left.State);
+                list.Result.Insert(0, result.Left.Result);
+                return list;
+            })(state).Left<ParseResult<List<T>>, ParseError>();
         }
 
         /// <summary>
