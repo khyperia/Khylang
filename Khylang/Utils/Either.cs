@@ -51,7 +51,7 @@ namespace Khylang.Utils
 
         public override string ToString()
         {
-            return string.Format("Left{{{0}}}", _value);
+            return string.Format("Left{{{0}}}", _value.Format());
         }
     }
 
@@ -71,7 +71,7 @@ namespace Khylang.Utils
 
         public override string ToString()
         {
-            return string.Format("Right{{{0}}}", _value);
+            return string.Format("Right{{{0}}}", _value.Format());
         }
     }
 }

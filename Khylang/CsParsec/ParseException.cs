@@ -2,9 +2,9 @@ using System;
 
 namespace Khylang.CsParsec
 {
-    public class ParseException : Exception
+    public class ParseException<TState> : Exception
     {
-        public ParseException(ParseError s)
+        public ParseException(ParseError<TState> s)
             : base(s.Error)
         {
         }

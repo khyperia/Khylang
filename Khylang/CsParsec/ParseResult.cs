@@ -1,17 +1,17 @@
 namespace Khylang.CsParsec
 {
-    public struct ParseResult<T>
+    public struct ParseResult<TState, T>
     {
-        private readonly ParseState _state;
+        private readonly ParseState<TState> _state;
         private readonly T _result;
 
-        public ParseResult(ParseState state, T result)
+        public ParseResult(ParseState<TState> state, T result)
         {
             _state = state;
             _result = result;
         }
 
-        public ParseState State
+        public ParseState<TState> State
         {
             get { return _state; }
         }
