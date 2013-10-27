@@ -1,5 +1,4 @@
 using System;
-using System.Security;
 using Khylang.Utils;
 
 namespace Khylang.CsParsec
@@ -13,7 +12,7 @@ namespace Khylang.CsParsec
 
         public static T RunParser<TState, T>(this GenParser<TState, T> parser, string s, TState state)
         {
-            var result = TryRunParser<TState, T>(parser, s, state);
+            var result = TryRunParser(parser, s, state);
             if (result.IsRight)
                 throw result.Right.Exception;
             return result.Left;
